@@ -5,6 +5,15 @@ class Department < ActiveRecord::Base
     self.employees.length
   end
 
+  def lowest_paid
+    temp = employees.sort_by {|e| e.salary}
+    temp.first
+  end
+
+  # def list_employees_by_name
+  #
+  # end
+
   def add_employee(new_employee)
     self.employees << new_employee
   end
