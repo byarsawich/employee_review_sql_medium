@@ -14,6 +14,11 @@ class Department < ActiveRecord::Base
     self.employees.sort_by {|e| e.first_name}
   end
 
+  def paid_above_average
+    average = department_salary / self.employees.length
+    self.employees.select {|e| e.salary > average}
+  end
+
   def add_employee(new_employee)
     self.employees << new_employee
   end
