@@ -10,9 +10,9 @@ class Department < ActiveRecord::Base
     temp.first
   end
 
-  # def list_employees_by_name
-  #
-  # end
+  def list_employees_by_name
+    self.employees.sort_by {|e| e.first_name}
+  end
 
   def add_employee(new_employee)
     self.employees << new_employee
