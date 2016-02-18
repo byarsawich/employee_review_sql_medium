@@ -15,6 +15,11 @@ class Department < ActiveRecord::Base
     raise_eligible.each {|e| e.raise_by_amount(amount)}
   end
 
+  def department_raise_by_percent(percent)
+    raise_eligible = self.employees.select {|e| yield(e)}
+    raise_eligible.each {|e| e.raise_by_percent(percent)}
+  end
+
   def total_employees
     self.employees.length
   end
