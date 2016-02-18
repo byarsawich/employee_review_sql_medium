@@ -19,6 +19,10 @@ class Department < ActiveRecord::Base
     self.employees.select {|e| e.salary > average}
   end
 
+  def employee_palindromes
+    self.employees.select {|e| e.name.gsub(" ", "").upcase == e.name.gsub(" ", "").reverse.upcase}
+  end
+
   def add_employee(new_employee)
     self.employees << new_employee
   end
