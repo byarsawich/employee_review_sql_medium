@@ -1,6 +1,20 @@
 class Department < ActiveRecord::Base
   has_many :employees
 
+  def add_employee(new_employee)
+    self.employees << new_employee
+  end
+
+  def department_salary
+    self.employees.reduce(0.0) {|sum, e| sum + e.salary}
+  end
+
+  def department_raise(alloted_amount)
+    raise_eligible = self.employees.select {|e| yield(e)}
+    amount = alloted_amount / raise_eligible.length
+    raise_eligible.each {|e| e.raise_by_amount(amount)}
+  end
+
   def total_employees
     self.employees.length
   end
@@ -23,17 +37,11 @@ class Department < ActiveRecord::Base
     self.employees.select {|e| e.name.gsub(" ", "").upcase == e.name.gsub(" ", "").reverse.upcase}
   end
 
-  def add_employee(new_employee)
-    self.employees << new_employee
+  def largest_department
+  end
+  
+  def move_to(department)
+    self.employees.each {|e| department.employees << e}
   end
 
-  def department_salary
-    self.employees.reduce(0.0) {|sum, e| sum + e.salary}
-  end
-
-  def department_raise(alloted_amount)
-    raise_eligible = self.employees.select {|e| yield(e)}
-    amount = alloted_amount / raise_eligible.length
-    raise_eligible.each {|e| e.raise_by_amount(amount)}
-  end
 end
