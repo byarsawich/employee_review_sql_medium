@@ -13,8 +13,14 @@ class EmployeeReviewsMigration < ActiveRecord::Migration
       t.string :email
       t.string :phone_number
       t.decimal :salary, precision: 10, scale: 2
-      t.text :review
       t.boolean :performance
+      t.timestamps null: false
+    end
+
+    create_table :reviews do |t|
+      t.references :employee
+      t.text :review
+      t.date :reviewed_on
       t.timestamps null: false
     end
   end

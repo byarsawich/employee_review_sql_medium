@@ -9,6 +9,7 @@ ActiveRecord::Base.establish_connection(
 
 require './department'
 require './employee'
+require './reviews'
 require './employee_review_migration'
 
 ActiveRecord::Migration.verbose = false
@@ -71,7 +72,8 @@ class EmployeeReviews < Minitest::Test
 
   def test_add_employee_review
     xavier = Employee.new(first_name: "Xavier", last_name: "Donner", email: "ProfX@marvel.com", phone_number: "911", salary: 70000.00)
-    assert xavier.add_employee_review(positive_review_one)
+    temp_review = Review.new(review: positive_review_one, reviewed_on: Date.today)
+    assert xavier.add_employee_review(temp_review)
   end
 
   def test_set_employee_performance
@@ -114,7 +116,8 @@ class EmployeeReviews < Minitest::Test
 
   def test_evaluate_employee_review
     xavier = Employee.new(first_name: "Xavier", last_name: "Donner", email: "ProfX@marvel.com", phone_number: "911", salary: 70000.00)
-    xavier.add_employee_review(positive_review_one)
+    temp_review = Review.new(review: positive_review_one, reviewed_on: Date.today)
+    xavier.add_employee_review(temp_review)
     assert xavier.performance
   end
 
@@ -175,11 +178,11 @@ class EmployeeReviews < Minitest::Test
   end
 
   def test_get_department_with_most_employees
-    a = Department.new(name: "Marketing")
-    b = Department.new(name: "Development")
-    xavier = Employee.new(first_name: "Xavier", last_name: "Donner", email: "ProfX@marvel.com", phone_number: "911", salary: 70000.00)
-    new_employee = Employee.new(first_name: "Race", last_name: "Car", email: "d@mail.com", phone_number: "914-555-5555", salary: 50000.00)
-    old_employee = Employee.new(first_name: "Yvonne", last_name: "Doe", email: "Yvonne@urFired.com", phone_number: "919-123-4567", salary: 40000.00)
+    a = Department.create(name: "Marketing")
+    b = Department.create(name: "Development")
+    xavier = Employee.create(first_name: "Xavier", last_name: "Donner", email: "ProfX@marvel.com", phone_number: "911", salary: 70000.00)
+    new_employee = Employee.create(first_name: "Race", last_name: "Car", email: "d@mail.com", phone_number: "914-555-5555", salary: 50000.00)
+    old_employee = Employee.create(first_name: "Yvonne", last_name: "Doe", email: "Yvonne@urFired.com", phone_number: "919-123-4567", salary: 40000.00)
     a.add_employee(xavier)
     a.add_employee(new_employee)
     b.add_employee(old_employee)

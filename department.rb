@@ -38,8 +38,17 @@ class Department < ActiveRecord::Base
   end
 
   def largest_department
+    max = Department.first.total_employees
+    temp_dept = Department.first
+    Department.order(:id).each do |d|
+      if d.total_employees > max
+        max = d.total_employees
+        temp_dept = d
+      end
+    end
+    temp_dept
   end
-  
+
   def move_to(department)
     self.employees.each {|e| department.employees << e}
   end
